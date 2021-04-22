@@ -1,0 +1,16 @@
+{
+    "name": "GraphQlClient",
+    "rootNamespace": "GraphQlClient",
+    "references": [
+        "GUID:3c42cfac18854b04ba2732a6ca485527"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

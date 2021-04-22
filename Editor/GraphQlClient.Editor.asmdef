@@ -1,0 +1,18 @@
+{
+    "name": "GraphQlClient.Editor",
+    "rootNamespace": "GraphQlClient.Editor",
+    "references": [
+        "GUID:d3ec5e2e59f1d374cb63729e536e0d70"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

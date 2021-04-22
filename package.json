@@ -1,0 +1,21 @@
+{
+  "name": "com.aimlab.science",
+  "displayName": "Aim Lab Science",
+  "description": "The science aspect of Aim Lab.",
+  "author": "Aim Lab",
+  "contributors": [{
+    "name": "Jason Clemente"
+  }],
+  "version": "1.0.0",
+  "unity": "2019.3",
+  "keywords": [
+    "aimlab",
+    "science",
+    "tasks",
+    "events"
+  ],
+  "repository": {
+    "url": "git+https://github.com/statespacelabs/AimLabScience.git",
+    "type": "git"
+  }
+}
