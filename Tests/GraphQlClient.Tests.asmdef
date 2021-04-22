@@ -1,7 +1,9 @@
 {
     "name": "GraphQlClient.Tests",
     "rootNamespace": "GraphQlClient",
-    "references": [],
+    "references": [
+        "GUID:d3ec5e2e59f1d374cb63729e536e0d70"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "Android",
