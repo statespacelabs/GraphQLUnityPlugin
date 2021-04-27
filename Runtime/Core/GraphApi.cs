@@ -327,6 +327,11 @@ namespace GraphQlClient.Core
             public List<Field> fields;
             public bool isComplete;
 
+            public override string ToString()
+            {
+                return query;
+            }
+
             public enum Type
             {
                 Query,
