@@ -348,8 +348,6 @@ namespace GraphQlClient.Core
                 args = inputString;
                 CompleteQuery();
             }
-            
-            
 
             public void CompleteQuery(){
                 isComplete = true;
