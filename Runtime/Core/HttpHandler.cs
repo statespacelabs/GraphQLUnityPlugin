@@ -18,9 +18,9 @@ namespace GraphQlClient.Core
 		public static async Task<UnityWebRequest> PostAsync(string url, string details, string authToken = null){
             string jsonData = JsonConvert.SerializeObject(new{query = details});
             byte[] postData = Encoding.ASCII.GetBytes(jsonData);
-            UnityWebRequest request = UnityWebRequest.Post(url, UnityWebRequest.kHttpVerbPOST);
-			request.uploadHandler.Dispose();
-            request.uploadHandler = new UploadHandlerRaw(postData);
+			var uploadHandler = new UploadHandlerRaw(postData);
+			var downloadHandler = new DownloadHandlerBuffer();
+            UnityWebRequest request = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST, downloadHandler, uploadHandler);
             request.SetRequestHeader("Content-Type", "application/json");
             if (!String.IsNullOrEmpty(authToken)) 
                 request.SetRequestHeader("Authorization", "Bearer " + authToken);
@@ -36,9 +36,7 @@ namespace GraphQlClient.Core
                 OnRequestEnded requestFailed = new OnRequestEnded(e);
                 requestFailed.FireEvent();
             }
-			Debug.Log(request.downloadHandler.text);
-            
-            OnRequestEnded requestSucceeded = new OnRequestEnded(request.downloadHandler.text);
+			OnRequestEnded requestSucceeded = new OnRequestEnded(downloadHandler.text);
             requestSucceeded.FireEvent();
             return request;
         }
