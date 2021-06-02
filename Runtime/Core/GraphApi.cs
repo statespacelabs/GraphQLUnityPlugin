@@ -323,6 +323,7 @@ namespace GraphQlClient.Core
             public string queryString;
             public string returnType;
             private string args;
+            private Dictionary<string, object> namedArgs = new Dictionary<string, object>();
             public List<string> queryOptions;
             public List<Field> fields;
             public bool isComplete;
@@ -338,16 +339,44 @@ namespace GraphQlClient.Core
                 Mutation,
                 Subscription
             }
-            public void SetArgs(object inputObject){
-                string json = JsonConvert.SerializeObject(inputObject, new EnumInputConverter());
-                args = JsonToArgument(json);
-                CompleteQuery();
-            }
+            
+            public void SetArgs(Dictionary<string, object> arguments)
+            {
+                foreach (var key in arguments.Keys)
+                {
+                    string json = JsonConvert.SerializeObject(arguments[key], new EnumInputConverter());
+                    var jsonArgs = JsonToArgument(json);
+                    
+                    if (!namedArgs.ContainsKey(key))
+                    {
+                        namedArgs.Add(key, jsonArgs);
+                    }
+                    else
+                    {
+                        namedArgs[key] = jsonArgs;
+                    }
 
-            public void SetArgs(string inputString){
-                args = inputString;
-                CompleteQuery();
+                    CompleteQuery();
+                }
             }
+            
+            public void SetArgs(Dictionary<string, string> arguments)
+            {
+                foreach (var key in arguments.Keys)
+                {
+                    if (!namedArgs.ContainsKey(key))
+                    {
+                        namedArgs.Add(key, arguments[key]);
+                    }
+                    else
+                    {
+                        namedArgs[key] = arguments[key];
+                    }
+
+                    CompleteQuery();
+                }
+            }
+            
 
             public void CompleteQuery(){
                 isComplete = true;
@@ -358,7 +387,15 @@ namespace GraphQlClient.Core
                     Field field = fields[i];
                     if (field.parentIndexes.Count == 0){
                         if (parent == null){
-                            data += $"\n{GenerateStringTabs(field.parentIndexes.Count + 2)}{field.name}";
+                            if (namedArgs.ContainsKey(field.name))
+                            {
+                                var subArg = String.IsNullOrEmpty(namedArgs[field.name].ToString()) ? "" : $"({namedArgs[field.name]})";
+                                data += $"\n{GenerateStringTabs(field.parentIndexes.Count + 2)}{field.name}" + subArg;
+                            }
+                            else
+                            {
+                                data += $"\n{GenerateStringTabs(field.parentIndexes.Count + 2)}{field.name}";
+                            }
                         }
                         else{
                             int count = previousField.parentIndexes.Count - field.parentIndexes.Count;
@@ -412,7 +449,12 @@ namespace GraphQlClient.Core
 
                 }
 
-                string arg = String.IsNullOrEmpty(args) ? "" : $"({args})";
+                string arg = string.Empty;
+                if (namedArgs.ContainsKey(queryString))
+                {
+                    arg = String.IsNullOrEmpty(namedArgs[queryString].ToString()) ? "" : $"({namedArgs[queryString]})";
+                }
+
                 string word;
                 switch (type){
                     case Type.Query:
